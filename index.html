@@ -1,0 +1,1374 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kaheins Cookies — Cookies Bikin Nagih</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --white: #ffffff;
+        --pink: #ff5ba3;
+        --pink-soft: #ffd6e8;
+        --blue: #2d5bff;
+        --blue-soft: #cfe0ff;
+        --ink: #111111;
+        --shadow: 6px 6px 0 var(--ink);
+        --shadow-sm: 4px 4px 0 var(--ink);
+        --shadow-lg: 9px 9px 0 var(--ink);
+        --border: 3px solid var(--ink);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Space Grotesk", sans-serif;
+        background: var(--white);
+        color: var(--ink);
+        line-height: 1.5;
+        /* subtle dotted texture, still dominantly white */
+        background-image: radial-gradient(
+          var(--pink-soft) 1.4px,
+          transparent 1.4px
+        );
+        background-size: 26px 26px;
+      }
+      h1,
+      h2,
+      h3,
+      .display {
+        font-family: "Archivo Black", sans-serif;
+        letter-spacing: -0.5px;
+        line-height: 1;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      img {
+        max-width: 100%;
+      }
+      .wrap {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* ---------- NAV ---------- */
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: var(--white);
+        border-bottom: var(--border);
+      }
+      .nav-in {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 20px;
+        max-width: 1180px;
+        margin: 0 auto;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: "Archivo Black", sans-serif;
+        font-size: 1.35rem;
+      }
+      .logo .badge {
+        background: var(--pink);
+        border: var(--border);
+        box-shadow: var(--shadow-sm);
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        font-size: 1.3rem;
+        transform: rotate(-6deg);
+      }
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .nav-links a.pill {
+        border: var(--border);
+        padding: 8px 14px;
+        font-weight: 700;
+        background: var(--white);
+        box-shadow: var(--shadow-sm);
+        transition:
+          transform 0.08s,
+          box-shadow 0.08s;
+      }
+      .nav-links a.pill:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0 var(--ink);
+      }
+      .nav-links a.pill:active {
+        transform: translate(2px, 2px);
+        box-shadow: 1px 1px 0 var(--ink);
+      }
+      .cart-btn {
+        background: var(--blue);
+        color: #fff;
+        border: var(--border);
+        padding: 8px 14px;
+        font-weight: 700;
+        box-shadow: var(--shadow-sm);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: "Space Grotesk";
+        font-size: 1rem;
+        transition:
+          transform 0.08s,
+          box-shadow 0.08s;
+        position: relative;
+      }
+      .cart-btn:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0 var(--ink);
+      }
+      .cart-btn:active {
+        transform: translate(2px, 2px);
+        box-shadow: 1px 1px 0 var(--ink);
+      }
+      .cart-count {
+        background: var(--pink);
+        color: #fff;
+        border: 2px solid var(--ink);
+        min-width: 24px;
+        height: 24px;
+        display: grid;
+        place-items: center;
+        font-size: 0.8rem;
+        border-radius: 50%;
+        padding: 0 4px;
+      }
+      .hide-mobile {
+        display: inline-flex;
+      }
+
+      /* ---------- HERO ---------- */
+      .hero {
+        padding: 64px 0 48px;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 40px;
+        align-items: center;
+      }
+      .eyebrow {
+        display: inline-block;
+        background: var(--blue);
+        color: #fff;
+        border: var(--border);
+        padding: 6px 14px;
+        font-weight: 700;
+        box-shadow: var(--shadow-sm);
+        transform: rotate(-2deg);
+        margin-bottom: 22px;
+      }
+      .hero h1 {
+        font-size: clamp(2.6rem, 6vw, 4.6rem);
+      }
+      .hero h1 .hl {
+        color: var(--pink);
+        -webkit-text-stroke: 2px var(--ink);
+      }
+      .hero p.lead {
+        font-size: 1.15rem;
+        margin: 22px 0 30px;
+        max-width: 460px;
+        font-weight: 500;
+      }
+      .hero-cta {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .btn {
+        font-family: "Archivo Black", sans-serif;
+        border: var(--border);
+        padding: 15px 26px;
+        font-size: 1rem;
+        box-shadow: var(--shadow);
+        cursor: pointer;
+        transition:
+          transform 0.1s,
+          box-shadow 0.1s;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .btn:hover {
+        transform: translate(-3px, -3px);
+        box-shadow: var(--shadow-lg);
+      }
+      .btn:active {
+        transform: translate(3px, 3px);
+        box-shadow: 2px 2px 0 var(--ink);
+      }
+      .btn-pink {
+        background: var(--pink);
+        color: #fff;
+      }
+      .btn-white {
+        background: #fff;
+      }
+      .btn-blue {
+        background: var(--blue);
+        color: #fff;
+      }
+
+      .hero-art {
+        position: relative;
+        display: grid;
+        place-items: center;
+        min-height: 300px;
+      }
+      .cookie-stack {
+        background: var(--pink-soft);
+        border: var(--border);
+        box-shadow: var(--shadow-lg);
+        width: 100%;
+        max-width: 360px;
+        aspect-ratio: 1;
+        border-radius: 24px;
+        display: grid;
+        place-items: center;
+        font-size: 9rem;
+        transform: rotate(3deg);
+        overflow: hidden;
+      }
+      .cookie-stack img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .sticker {
+        position: absolute;
+        background: #fff;
+        border: var(--border);
+        box-shadow: var(--shadow-sm);
+        padding: 8px 14px;
+        font-family: "Archivo Black";
+        font-size: 0.85rem;
+      }
+      .sticker.s1 {
+        top: 6px;
+        left: -6px;
+        background: var(--blue);
+        color: #fff;
+        transform: rotate(-10deg);
+      }
+      .sticker.s2 {
+        bottom: 18px;
+        right: -8px;
+        background: var(--pink);
+        color: #fff;
+        transform: rotate(8deg);
+      }
+
+      .marquee {
+        margin-top: 46px;
+        border-top: var(--border);
+        border-bottom: var(--border);
+        background: var(--pink);
+        color: #fff;
+        overflow: hidden;
+        white-space: nowrap;
+        padding: 12px 0;
+      }
+      .marquee span {
+        display: inline-block;
+        font-family: "Archivo Black";
+        font-size: 1.1rem;
+        animation: scroll 18s linear infinite;
+      }
+      @keyframes scroll {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* ---------- SECTION HEADER ---------- */
+      .sec {
+        padding: 64px 0;
+      }
+      .sec-head {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 34px;
+        flex-wrap: wrap;
+      }
+      .sec-head h2 {
+        font-size: clamp(1.9rem, 4vw, 2.8rem);
+      }
+      .tag {
+        display: inline-block;
+        background: var(--blue-soft);
+        border: var(--border);
+        padding: 5px 12px;
+        font-weight: 700;
+        box-shadow: var(--shadow-sm);
+        margin-bottom: 12px;
+        transform: rotate(-1deg);
+      }
+
+      /* ---------- PRODUCTS ---------- */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 22px;
+      }
+      .card {
+        background: #fff;
+        border: var(--border);
+        box-shadow: var(--shadow);
+        display: flex;
+        flex-direction: column;
+        transition:
+          transform 0.12s,
+          box-shadow 0.12s;
+      }
+      .card:hover {
+        transform: translate(-3px, -3px);
+        box-shadow: var(--shadow-lg);
+      }
+      .card .thumb {
+        border-bottom: var(--border);
+        aspect-ratio: 1.2;
+        display: grid;
+        place-items: center;
+        font-size: 4rem;
+        position: relative;
+        overflow: hidden;
+      }
+      .card .thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .card .price-chip {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #fff;
+        border: var(--border);
+        box-shadow: var(--shadow-sm);
+        font-family: "Archivo Black";
+        font-size: 0.8rem;
+        padding: 5px 9px;
+      }
+      .card .body {
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        flex: 1;
+      }
+      .card h3 {
+        font-size: 1.05rem;
+      }
+      .card .desc {
+        font-size: 0.85rem;
+        color: #444;
+        flex: 1;
+      }
+      .card .add {
+        margin-top: 6px;
+        background: var(--blue);
+        color: #fff;
+        border: var(--border);
+        box-shadow: var(--shadow-sm);
+        font-family: "Archivo Black";
+        font-size: 0.85rem;
+        padding: 11px;
+        cursor: pointer;
+        width: 100%;
+        transition:
+          transform 0.08s,
+          box-shadow 0.08s;
+      }
+      .card .add:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 5px 5px 0 var(--ink);
+        background: var(--pink);
+      }
+      .card .add:active {
+        transform: translate(2px, 2px);
+        box-shadow: 1px 1px 0 var(--ink);
+      }
+
+      /* alternate thumb backgrounds */
+      .bg-pink {
+        background: var(--pink-soft);
+      }
+      .bg-blue {
+        background: var(--blue-soft);
+      }
+      .bg-white {
+        background: #fff;
+      }
+
+      /* ---------- ADDRESS ---------- */
+      .addr-wrap {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 0;
+        border: var(--border);
+        box-shadow: var(--shadow-lg);
+        background: #fff;
+      }
+      .addr-left {
+        padding: 38px;
+        border-right: var(--border);
+      }
+      .addr-left h2 {
+        font-size: clamp(1.8rem, 4vw, 2.6rem);
+        margin-bottom: 18px;
+      }
+      .addr-row {
+        display: flex;
+        gap: 14px;
+        margin-bottom: 18px;
+        align-items: flex-start;
+      }
+      .addr-ic {
+        flex: none;
+        width: 44px;
+        height: 44px;
+        border: var(--border);
+        display: grid;
+        place-items: center;
+        font-size: 1.2rem;
+        box-shadow: var(--shadow-sm);
+      }
+      .addr-ic.p {
+        background: var(--pink);
+        color: #fff;
+      }
+      .addr-ic.b {
+        background: var(--blue);
+        color: #fff;
+      }
+      .addr-ic.w {
+        background: #fff;
+      }
+      .addr-row b {
+        display: block;
+        font-family: "Archivo Black";
+        font-size: 0.95rem;
+        margin-bottom: 2px;
+      }
+      .addr-row span {
+        font-size: 0.95rem;
+        color: #333;
+      }
+      .addr-map {
+        background: var(--blue-soft);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        min-height: 320px;
+      }
+      .addr-map iframe {
+        width: 100%;
+        height: 100%;
+        min-height: 280px;
+        border: var(--border);
+        display: block;
+      }
+
+      /* ---------- CART DRAWER ---------- */
+      .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(17, 17, 17, 0.4);
+        z-index: 60;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s;
+      }
+      .overlay.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .drawer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: min(420px, 92vw);
+        background: #fff;
+        z-index: 70;
+        border-left: var(--border);
+        transform: translateX(105%);
+        transition: transform 0.26s cubic-bezier(0.4, 1.2, 0.4, 1);
+        display: flex;
+        flex-direction: column;
+      }
+      .drawer.show {
+        transform: translateX(0);
+      }
+      .drawer-head {
+        padding: 20px;
+        border-bottom: var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--pink);
+        color: #fff;
+      }
+      .drawer-head h3 {
+        font-size: 1.3rem;
+      }
+      .close-x {
+        background: #fff;
+        color: var(--ink);
+        border: var(--border);
+        width: 36px;
+        height: 36px;
+        cursor: pointer;
+        font-family: "Archivo Black";
+        box-shadow: var(--shadow-sm);
+      }
+      .drawer-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+      .empty {
+        text-align: center;
+        padding: 50px 16px;
+        color: #666;
+      }
+      .empty .ic {
+        font-size: 3.4rem;
+        margin-bottom: 10px;
+      }
+      .citem {
+        display: flex;
+        gap: 12px;
+        border: var(--border);
+        box-shadow: var(--shadow-sm);
+        padding: 10px;
+        align-items: center;
+      }
+      .citem .ce {
+        font-size: 2rem;
+        width: 48px;
+        height: 48px;
+        display: grid;
+        place-items: center;
+        border: var(--border);
+        background: var(--pink-soft);
+        flex: none;
+        overflow: hidden;
+      }
+      .citem .ce img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .citem .cmid {
+        flex: 1;
+        min-width: 0;
+      }
+      .citem .cmid b {
+        display: block;
+        font-size: 0.9rem;
+        font-family: "Archivo Black";
+      }
+      .citem .cmid span {
+        font-size: 0.8rem;
+        color: #555;
+      }
+      .qty {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        border: var(--border);
+      }
+      .qty button {
+        width: 28px;
+        height: 28px;
+        background: #fff;
+        border: none;
+        cursor: pointer;
+        font-family: "Archivo Black";
+        font-size: 0.9rem;
+      }
+      .qty button:hover {
+        background: var(--blue);
+        color: #fff;
+      }
+      .qty span {
+        width: 30px;
+        text-align: center;
+        font-weight: 700;
+        border-left: var(--border);
+        border-right: var(--border);
+      }
+      .drawer-foot {
+        border-top: var(--border);
+        padding: 18px;
+        background: var(--blue-soft);
+      }
+      .total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+        font-family: "Archivo Black";
+        font-size: 1.25rem;
+      }
+      .checkout {
+        width: 100%;
+        background: #25d366;
+        color: #fff;
+        border: var(--border);
+        box-shadow: var(--shadow);
+        font-family: "Archivo Black";
+        font-size: 1.05rem;
+        padding: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition:
+          transform 0.1s,
+          box-shadow 0.1s;
+      }
+      .checkout:hover {
+        transform: translate(-3px, -3px);
+        box-shadow: var(--shadow-lg);
+      }
+      .checkout:active {
+        transform: translate(3px, 3px);
+        box-shadow: 2px 2px 0 var(--ink);
+      }
+      .checkout:disabled {
+        background: #bbb;
+        cursor: not-allowed;
+        box-shadow: var(--shadow);
+        transform: none;
+      }
+
+      /* ---------- CHECKOUT FORM ---------- */
+      .checkout-form {
+        margin-bottom: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .checkout-form label {
+        font-weight: 700;
+        font-size: 0.82rem;
+        display: block;
+        margin-bottom: 4px;
+      }
+      .checkout-form input,
+      .checkout-form textarea {
+        width: 100%;
+        border: var(--border);
+        box-shadow: var(--shadow-sm);
+        padding: 10px 12px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 0.9rem;
+        background: #fff;
+        resize: vertical;
+      }
+      .checkout-form textarea {
+        min-height: 64px;
+      }
+      .checkout-form input:focus,
+      .checkout-form textarea:focus {
+        outline: none;
+        transform: translate(-1px, -1px);
+        box-shadow: 5px 5px 0 var(--ink);
+      }
+
+      /* ---------- FEATHER ICONS ---------- */
+      .feather {
+        width: 20px;
+        height: 20px;
+        stroke-width: 2.2;
+        vertical-align: -4px;
+        flex: none;
+      }
+      .logo .feather,
+      .foot-logo .feather {
+        width: 22px;
+        height: 22px;
+      }
+      .btn .feather,
+      .pill .feather,
+      .tag .feather,
+      .cart-btn .feather,
+      .card .add .feather,
+      .checkout .feather,
+      .toast .feather {
+        width: 18px;
+        height: 18px;
+        stroke-width: 2.4;
+      }
+      .addr-ic .feather {
+        width: 22px;
+        height: 22px;
+      }
+      .addr-map .feather {
+        width: 56px;
+        height: 56px;
+      }
+      .empty .feather {
+        width: 48px;
+        height: 48px;
+      }
+      .drawer-head .feather {
+        width: 22px;
+        height: 22px;
+      }
+      .close-x .feather {
+        width: 18px;
+        height: 18px;
+      }
+      .qty .feather {
+        width: 14px;
+        height: 14px;
+      }
+      .citem .ce .feather {
+        width: 22px;
+        height: 22px;
+      }
+
+      /* toast */
+      .toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(120px);
+        z-index: 90;
+        background: var(--ink);
+        color: #fff;
+        border: var(--border);
+        box-shadow: var(--shadow);
+        padding: 12px 20px;
+        font-weight: 700;
+        transition: transform 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .toast.show {
+        transform: translateX(-50%) translateY(0);
+      }
+
+      /* ---------- FOOTER ---------- */
+      footer {
+        background: var(--ink);
+        color: #fff;
+        border-top: var(--border);
+        margin-top: 30px;
+      }
+      .foot-in {
+        padding: 48px 20px;
+        max-width: 1180px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1.4fr 1fr 1fr;
+        gap: 30px;
+      }
+      footer h4 {
+        font-family: "Archivo Black";
+        margin-bottom: 14px;
+        color: var(--pink);
+      }
+      footer a {
+        display: block;
+        margin-bottom: 8px;
+        color: #ddd;
+      }
+      footer a:hover {
+        color: var(--pink);
+      }
+      .foot-logo {
+        font-family: "Archivo Black";
+        font-size: 1.5rem;
+        margin-bottom: 10px;
+      }
+      .foot-bottom {
+        border-top: 1px solid #333;
+        text-align: center;
+        padding: 18px;
+        font-size: 0.85rem;
+        color: #999;
+      }
+
+      /* ---------- RESPONSIVE ---------- */
+      @media (max-width: 980px) {
+        .grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .hero-grid {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+        .hero-art {
+          order: -1;
+        }
+        .addr-wrap {
+          grid-template-columns: 1fr;
+        }
+        .addr-left {
+          border-right: none;
+          border-bottom: var(--border);
+        }
+        .foot-in {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 560px) {
+        .grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 14px;
+        }
+        .hide-mobile {
+          display: none;
+        }
+        .foot-in {
+          grid-template-columns: 1fr;
+        }
+        .card .thumb {
+          font-size: 3rem;
+        }
+        .nav-in {
+          padding: 12px 16px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation: none !important;
+        }
+        .btn,
+        .card,
+        .cart-btn,
+        .checkout {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav>
+      <div class="nav-in">
+        <a href="#top" class="logo"
+          ><span class="badge">🍪</span>Kaheins Cookies<span
+            style="color: var(--pink)"
+          ></span
+        ></a>
+        <div class="nav-links">
+          <a href="#produk" class="pill hide-mobile">Menu</a>
+          <a href="#alamat" class="pill hide-mobile">Lokasi</a>
+          <button class="cart-btn" id="openCart">
+            <i data-feather="shopping-cart"></i> Keranjang
+            <span class="cart-count" id="navCount">0</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero" id="top">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div>
+            <span class="eyebrow"
+              ><i data-feather="sun"></i> Fresh baked every day</span
+            >
+            <h1>
+              Cookies <span class="hl">renyah</span> di luar, lumer di dalam.
+            </h1>
+            <p class="lead">
+              Kaheins Cookies bikin tiap gigitan jadi momen. Bahan premium,
+              dipanggang harian, langsung dianter ke rumah kamu. Pilih, masukin
+              keranjang, checkout lewat WhatsApp. Gampang!
+            </p>
+            <div class="hero-cta">
+              <a href="#produk" class="btn btn-pink"
+                >Lihat Menu <i data-feather="arrow-right"></i
+              ></a>
+              <button class="btn btn-white" id="heroCart">
+                Buka Keranjang <i data-feather="shopping-cart"></i>
+              </button>
+            </div>
+          </div>
+          <div class="hero-art">
+            <div class="cookie-stack">
+              <img
+                src="images/cookies.jpg"
+                alt="Kaheins Cookies"
+                onerror="handleImgError(this, '🍪')"
+              />
+            </div>
+            <span class="sticker s1">100% FRESH</span>
+            <span class="sticker s2">NAGIH BANGET</span>
+          </div>
+        </div>
+      </div>
+      <div class="marquee">
+        <span
+          >FRESH FROM OVEN 🍪 ANTAR KE RUMAH 🍪 CHECKOUT VIA WHATSAPP 🍪 FRESH
+          FROM OVEN 🍪 ANTAR KE RUMAH 🍪 CHECKOUT VIA WHATSAPP 🍪 FRESH FROM
+          OVEN 🍪
+        </span>
+      </div>
+    </header>
+
+    <!-- PRODUCTS -->
+    <section class="sec" id="produk">
+      <div class="wrap">
+        <div class="sec-head">
+          <div>
+            <span class="tag"
+              ><i data-feather="trending-up"></i> Best Seller</span
+            >
+            <h2>Pilih Cookies Favoritmu</h2>
+          </div>
+          <p style="max-width: 300px; font-weight: 500">
+            Klik <b>Tambah</b> buat masukin ke keranjang. Bisa campur-campur
+            sesukamu.
+          </p>
+        </div>
+        <div class="grid" id="productGrid"></div>
+      </div>
+    </section>
+
+    <!-- ADDRESS -->
+    <section class="sec" id="alamat" style="padding-top: 0">
+      <div class="wrap">
+        <div class="addr-wrap">
+          <div class="addr-left">
+            <span class="tag"><i data-feather="map-pin"></i> Mampir Yuk</span>
+            <h2>Alamat Toko Kami</h2>
+            <div class="addr-row">
+              <div class="addr-ic p"><i data-feather="home"></i></div>
+              <div>
+                <b>Kaheins Cookies</b
+                ><span>Jl. Putri Sima 1 No. 24, Cibodas, Tangerang</span>
+              </div>
+            </div>
+            <div class="addr-row">
+              <div class="addr-ic b"><i data-feather="clock"></i></div>
+              <div>
+                <b>Jam Buka</b
+                ><span
+                  >Senin–Sabtu: 09.00 – 21.00 WIB · Minggu: 10.00 – 18.00
+                  WIB</span
+                >
+              </div>
+            </div>
+            <div class="addr-row">
+              <div class="addr-ic w"><i data-feather="phone"></i></div>
+              <div><b>Telp / WhatsApp</b><span>+62 838-4853-1389</span></div>
+            </div>
+            <div class="addr-row">
+              <div class="addr-ic p"><i data-feather="instagram"></i></div>
+              <div><b>Instagram</b><span>@kaheins.cookies</span></div>
+            </div>
+          </div>
+          <div class="addr-map">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.5032444521894!2d106.60175459999999!3d-6.1971385!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ffe84a4c7b19%3A0x858c638b70ffbad8!2sKaheins%20Cookies!5e0!3m2!1sid!2sid!4v1782055248929!5m2!1sid!2sid"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CART DRAWER -->
+    <div class="overlay" id="overlay"></div>
+    <aside class="drawer" id="drawer" aria-label="Keranjang belanja">
+      <div class="drawer-head">
+        <h3><i data-feather="shopping-cart"></i> Keranjang Kamu</h3>
+        <button class="close-x" id="closeCart" aria-label="Tutup">
+          <i data-feather="x"></i>
+        </button>
+      </div>
+      <div class="drawer-body" id="cartBody"></div>
+      <div class="drawer-foot">
+        <div class="total-row">
+          <span>Total</span><span id="cartTotal">Rp 0</span>
+        </div>
+        <div class="checkout-form">
+          <div>
+            <label for="buyerName">Nama Pembeli</label>
+            <input
+              type="text"
+              id="buyerName"
+              placeholder="Nama lengkap kamu"
+              required
+            />
+          </div>
+          <div>
+            <label for="buyerAddress">Alamat Pengiriman</label>
+            <textarea
+              id="buyerAddress"
+              placeholder="Alamat lengkap tujuan pengiriman"
+              required
+            ></textarea>
+          </div>
+        </div>
+        <button class="checkout" id="checkoutBtn" disabled>
+          <i data-feather="message-circle"></i> Checkout via WhatsApp
+        </button>
+        <p
+          style="
+            font-size: 0.78rem;
+            color: #444;
+            margin-top: 10px;
+            text-align: center;
+          "
+        >
+          Pesanan dikirim otomatis ke WhatsApp toko 🚀
+        </p>
+      </div>
+    </aside>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">
+      <i data-feather="check-circle"></i> Ditambahkan ke keranjang!
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="foot-in">
+        <div>
+          <div class="foot-logo">🍪 Kaheins Cookies</div>
+          <p style="color: #ccc; max-width: 280px">
+            Cookies homemade premium, dipanggang fresh tiap hari. Dibuat dengan
+            cinta dari dapur kami untuk kamu. ❤️
+          </p>
+        </div>
+        <div>
+          <h4>Navigasi</h4>
+          <a href="#produk">Menu Cookies</a>
+          <a href="#alamat">Lokasi Toko</a>
+          <a href="#top">Kembali ke Atas</a>
+        </div>
+        <div>
+          <h4>Hubungi</h4>
+          <a href="#" id="footWa">WhatsApp</a>
+          <a href="https://www.instagram.com/kaheins.sweetbaked/"
+            >Instagram @kaheins.cookies</a
+          >
+          <a href="#">kaheins.cookies@gmail.com</a>
+        </div>
+      </div>
+      <div class="foot-bottom">© 2026 Kaheins Cookies</div>
+    </footer>
+
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script>
+      // ====== KONFIGURASI ======
+      // Ganti nomor di bawah dengan nomor WhatsApp toko (format internasional tanpa +, tanpa 0 depan)
+      const WA_NUMBER = "6283848531389";
+
+      // ====== DATA PRODUK ======
+      const products = [
+        {
+          id: 1,
+          name: "Choco Lava Classic",
+          emoji: "🍪",
+          image: "images/cookies.jpg",
+          price: 18000,
+          desc: "Cookies cokelat klasik dengan lava lumer di tengah.",
+          bg: "bg-pink",
+        },
+        {
+          id: 2,
+          name: "Red Velvet Crinkle",
+          emoji: "❤️",
+          image: "images/cookies.jpg",
+          price: 20000,
+          desc: "Lembut, manis, dengan lapisan gula salju di atasnya.",
+          bg: "bg-white",
+        },
+        {
+          id: 3,
+          name: "Matcha White Choco",
+          emoji: "🍵",
+          image: "images/cookies.jpg",
+          price: 22000,
+          desc: "Matcha premium dipadu white chocolate yang creamy.",
+          bg: "bg-blue",
+        },
+        {
+          id: 4,
+          name: "Double Choco Chunky",
+          emoji: "🍫",
+          image: "images/cookies.jpg",
+          price: 21000,
+          desc: "Cokelat dobel, chunky, buat pecinta cokelat sejati.",
+          bg: "bg-pink",
+        },
+        {
+          id: 5,
+          name: "Salted Caramel",
+          emoji: "🧈",
+          image: "images/cookies.jpg",
+          price: 23000,
+          desc: "Karamel asin yang meleleh, manis-gurih nagih.",
+          bg: "bg-white",
+        },
+        {
+          id: 6,
+          name: "Oatmeal Raisin",
+          emoji: "🌾",
+          image: "images/cookies.jpg",
+          price: 17000,
+          desc: "Oatmeal hangat dengan kismis, klasik dan bersahaja.",
+          bg: "bg-blue",
+        },
+        {
+          id: 7,
+          name: "Birthday Funfetti",
+          emoji: "🎉",
+          image: "images/cookies.jpg",
+          price: 19000,
+          desc: "Penuh sprinkle warna-warni, vibes ulang tahun!",
+          bg: "bg-pink",
+        },
+        {
+          id: 8,
+          name: "Nutella Stuffed",
+          emoji: "🤎",
+          image: "images/cookies.jpg",
+          price: 25000,
+          desc: "Diisi Nutella melimpah di dalamnya. Juara!",
+          bg: "bg-white",
+        },
+      ];
+
+      // Coba .jpg dulu, kalau gagal coba .png, kalau tetap gagal tampilkan emoji
+      function handleImgError(img, emoji) {
+        if (!img.dataset.triedPng) {
+          img.dataset.triedPng = "1";
+          img.src = img.src.replace(/\.jpg(\?.*)?$/i, ".png$1");
+          return;
+        }
+        const span = document.createElement("span");
+        span.textContent = emoji;
+        span.style.fontSize = "inherit";
+        img.replaceWith(span);
+      }
+
+      const rupiah = (n) => "Rp " + n.toLocaleString("id-ID");
+      let cart = {}; // id -> qty
+
+      // ====== RENDER PRODUK ======
+      const grid = document.getElementById("productGrid");
+      products.forEach((p) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+      <div class="thumb ${p.bg}">
+        <img src="${p.image}" alt="${p.name}" onerror="handleImgError(this,'${p.emoji}')" />
+        <span class="price-chip">${rupiah(p.price)}</span>
+      </div>
+      <div class="body">
+        <h3>${p.name}</h3>
+        <p class="desc">${p.desc}</p>
+        <button class="add" data-id="${p.id}">
+          <i data-feather="plus"></i> Tambah
+        </button>
+      </div>`;
+        grid.appendChild(card);
+      });
+      if (window.feather) feather.replace();
+
+      // ====== CART LOGIC ======
+      const cartBody = document.getElementById("cartBody");
+      const navCount = document.getElementById("navCount");
+      const cartTotal = document.getElementById("cartTotal");
+      const checkoutBtn = document.getElementById("checkoutBtn");
+
+      function addToCart(id) {
+        cart[id] = (cart[id] || 0) + 1;
+        renderCart();
+        showToast();
+      }
+      function changeQty(id, delta) {
+        cart[id] = (cart[id] || 0) + delta;
+        if (cart[id] <= 0) delete cart[id];
+        renderCart();
+      }
+
+      function renderCart() {
+        const ids = Object.keys(cart);
+        const count = ids.reduce((s, id) => s + cart[id], 0);
+        navCount.textContent = count;
+        let total = 0;
+
+        if (ids.length === 0) {
+          cartBody.innerHTML = `<div class="empty"><div class="ic"><i data-feather="shopping-cart"></i></div><p style="font-weight:700;font-family:'Archivo Black'">Keranjang masih kosong</p><p style="font-size:.9rem;margin-top:6px">Yuk pilih cookies favoritmu dulu!</p></div>`;
+          checkoutBtn.disabled = true;
+          cartTotal.textContent = rupiah(0);
+          if (window.feather) feather.replace();
+          return;
+        }
+
+        cartBody.innerHTML = "";
+        ids.forEach((id) => {
+          const p = products.find((x) => x.id == id);
+          const qty = cart[id];
+          total += p.price * qty;
+          const row = document.createElement("div");
+          row.className = "citem";
+          row.innerHTML = `
+        <div class="ce"><img src="${p.image}" alt="${p.name}" onerror="handleImgError(this,'${p.emoji}')" /></div>
+        <div class="cmid">
+          <b>${p.name}</b>
+          <span>${rupiah(p.price)} × ${qty} = <b>${rupiah(p.price * qty)}</b></span>
+        </div>
+        <div class="qty">
+          <button data-dec="${id}"><i data-feather="minus"></i></button>
+          <span>${qty}</span>
+          <button data-inc="${id}"><i data-feather="plus"></i></button>
+        </div>`;
+          cartBody.appendChild(row);
+        });
+        cartTotal.textContent = rupiah(total);
+        checkoutBtn.disabled = false;
+        if (window.feather) feather.replace();
+      }
+
+      // ====== EVENTS ======
+      grid.addEventListener("click", (e) => {
+        const btn = e.target.closest(".add");
+        if (btn) addToCart(btn.dataset.id);
+      });
+      cartBody.addEventListener("click", (e) => {
+        const incBtn = e.target.closest("[data-inc]");
+        const decBtn = e.target.closest("[data-dec]");
+        if (incBtn) changeQty(incBtn.dataset.inc, 1);
+        if (decBtn) changeQty(decBtn.dataset.dec, -1);
+      });
+
+      // drawer open/close
+      const overlay = document.getElementById("overlay");
+      const drawer = document.getElementById("drawer");
+      const openDrawer = () => {
+        drawer.classList.add("show");
+        overlay.classList.add("show");
+      };
+      const closeDrawer = () => {
+        drawer.classList.remove("show");
+        overlay.classList.remove("show");
+      };
+      document.getElementById("openCart").addEventListener("click", openDrawer);
+      document.getElementById("heroCart").addEventListener("click", openDrawer);
+      document
+        .getElementById("closeCart")
+        .addEventListener("click", closeDrawer);
+      overlay.addEventListener("click", closeDrawer);
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeDrawer();
+      });
+
+      // toast
+      let toastTimer;
+      const toast = document.getElementById("toast");
+      function showToast(
+        message = "Ditambahkan ke keranjang!",
+        icon = "check-circle",
+      ) {
+        toast.innerHTML = `<i data-feather="${icon}"></i> ${message}`;
+        if (window.feather) feather.replace();
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 1600);
+      }
+
+      // ====== CHECKOUT -> WHATSAPP ======
+      const buyerNameInput = document.getElementById("buyerName");
+      const buyerAddressInput = document.getElementById("buyerAddress");
+
+      function buildWaMessage(name, address) {
+        let msg = "Halo Kaheins Cookies! 🍪 Saya mau pesan:\n\n";
+        msg += `Nama Pembeli: ${name}\nAlamat Pengiriman: ${address}\n\n`;
+        let total = 0;
+        Object.keys(cart).forEach((id) => {
+          const p = products.find((x) => x.id == id);
+          const qty = cart[id];
+          total += p.price * qty;
+          msg += `• ${p.name} x${qty} — ${rupiah(p.price * qty)}\n`;
+        });
+        msg += `\n*Total: ${rupiah(total)}*\n\nMohon info ketersediaan & ongkirnya ya. Terima kasih! 🙏`;
+        return encodeURIComponent(msg);
+      }
+      checkoutBtn.addEventListener("click", () => {
+        if (Object.keys(cart).length === 0) return;
+        const name = buyerNameInput.value.trim();
+        const address = buyerAddressInput.value.trim();
+        if (!name) {
+          showToast("Isi nama kamu dulu ya!", "alert-triangle");
+          buyerNameInput.focus();
+          return;
+        }
+        if (!address) {
+          showToast(
+            "Isi alamat pengiriman kamu dulu ya, hehe!",
+            "alert-triangle",
+          );
+          buyerAddressInput.focus();
+          return;
+        }
+        const url = `https://wa.me/${WA_NUMBER}?text=${buildWaMessage(name, address)}`;
+        window.open(url, "_blank");
+      });
+      document.getElementById("footWa").addEventListener("click", (e) => {
+        e.preventDefault();
+        window.open(
+          `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Halo Kaheins Cookies! Aku mau pesan cookies dong")}`,
+          "_blank",
+        );
+      });
+
+      renderCart();
+      if (window.feather) feather.replace();
+    </script>
+  </body>
+</html>
