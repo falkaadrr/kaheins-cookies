@@ -9,7 +9,8 @@
     <link
       href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
-    />    <style>
+    />
+    <style>
       :root {
         --white: #ffffff;
         --pink: #ff5ba3;
@@ -641,13 +642,72 @@
         padding: 18px;
         background: var(--blue-soft);
       }
+      .voucher-row {
+        display: flex;
+        gap: 0;
+        margin-bottom: 6px;
+      }
+      .voucher-row input {
+        flex: 1;
+        min-width: 0;
+        border: var(--border);
+        border-right: none;
+        padding: 11px 12px;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        background: #fff;
+      }
+      .voucher-row input:focus {
+        outline: none;
+        background: var(--pink-soft);
+      }
+      .voucher-row input::placeholder {
+        text-transform: none;
+        color: #888;
+        font-weight: 500;
+      }
+      .voucher-row button {
+        background: var(--ink);
+        color: #fff;
+        border: var(--border);
+        font-family: "Archivo Black";
+        font-size: 0.85rem;
+        padding: 0 16px;
+        cursor: pointer;
+        transition: background 0.1s;
+      }
+      .voucher-row button:hover {
+        background: var(--pink);
+      }
+      #voucherMsg {
+        font-size: 0.8rem;
+        margin: 6px 0 4px;
+        font-weight: 600;
+        min-height: 1em;
+      }
+      .sub-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: #333;
+      }
+      .sub-row.disc {
+        color: var(--pink);
+      }
       .total-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 14px;
+        margin: 10px 0 14px;
         font-family: "Archivo Black";
         font-size: 1.25rem;
+        border-top: 2px dashed var(--ink);
+        padding-top: 10px;
       }
       .checkout {
         width: 100%;
@@ -1026,6 +1086,23 @@
       </div>
       <div class="drawer-body" id="cartBody"></div>
       <div class="drawer-foot">
+        <div class="voucher-row">
+          <input
+            type="text"
+            id="voucherInput"
+            placeholder="Punya kode voucher?"
+            autocomplete="off"
+          />
+          <button id="applyVoucher">Pakai</button>
+        </div>
+        <p id="voucherMsg"></p>
+        <div class="sub-row">
+          <span>Subtotal</span><span id="cartSubtotal">Rp 0</span>
+        </div>
+        <div class="sub-row disc" id="discRow" style="display: none">
+          <span id="discLabel">Diskon</span
+          ><span id="cartDiscount">- Rp 0</span>
+        </div>
         <div class="total-row">
           <span>Total</span><span id="cartTotal">Rp 0</span>
         </div>
@@ -1177,6 +1254,30 @@
       const rupiah = (n) => "Rp " + n.toLocaleString("id-ID");
       let cart = {}; // id -> qty
 
+      // ====== DATA VOUCHER ======
+      // type: "percent" (potongan %) atau "fixed" (potongan Rp). minOrder = minimal belanja.
+      const vouchers = {
+        KAHEINS10: {
+          type: "percent",
+          value: 10,
+          minOrder: 50000,
+          label: "Diskon 10%",
+        },
+        HEMAT5K: {
+          type: "fixed",
+          value: 5000,
+          minOrder: 30000,
+          label: "Potongan Rp 5.000",
+        },
+        ONGKIRGRATIS: {
+          type: "fixed",
+          value: 10000,
+          minOrder: 75000,
+          label: "Gratis ongkir Rp 10.000",
+        },
+      };
+      let appliedVoucher = null;
+
       // ====== RENDER PRODUK ======
       const grid = document.getElementById("productGrid");
       products.forEach((p) => {
@@ -1202,7 +1303,32 @@
       const cartBody = document.getElementById("cartBody");
       const navCount = document.getElementById("navCount");
       const cartTotal = document.getElementById("cartTotal");
+      const cartSubtotal = document.getElementById("cartSubtotal");
+      const cartDiscount = document.getElementById("cartDiscount");
+      const discRow = document.getElementById("discRow");
+      const discLabel = document.getElementById("discLabel");
       const checkoutBtn = document.getElementById("checkoutBtn");
+
+      function getSubtotal() {
+        return Object.keys(cart).reduce((s, id) => {
+          const p = products.find((x) => x.id == id);
+          return s + p.price * cart[id];
+        }, 0);
+      }
+      function getDiscount(subtotal) {
+        if (!appliedVoucher) return 0;
+        // kalau belanja turun di bawah min order, voucher batal otomatis
+        if (subtotal < appliedVoucher.minOrder) {
+          appliedVoucher = null;
+          updateVoucherMsg();
+          return 0;
+        }
+        const d =
+          appliedVoucher.type === "percent"
+            ? Math.round((subtotal * appliedVoucher.value) / 100)
+            : appliedVoucher.value;
+        return Math.min(d, subtotal); // diskon nggak boleh lebih besar dari subtotal
+      }
 
       function addToCart(id) {
         cart[id] = (cart[id] || 0) + 1;
@@ -1219,24 +1345,18 @@
         const ids = Object.keys(cart);
         const count = ids.reduce((s, id) => s + cart[id], 0);
         navCount.textContent = count;
-        let total = 0;
 
         if (ids.length === 0) {
           cartBody.innerHTML = `<div class="empty"><div class="ic"><i data-feather="shopping-cart"></i></div><p style="font-weight:700;font-family:'Archivo Black'">Keranjang masih kosong</p><p style="font-size:.9rem;margin-top:6px">Yuk pilih cookies favoritmu dulu!</p></div>`;
           checkoutBtn.disabled = true;
-          cartTotal.textContent = rupiah(0);
-          if (window.feather) feather.replace();
-          return;
-        }
-
-        cartBody.innerHTML = "";
-        ids.forEach((id) => {
-          const p = products.find((x) => x.id == id);
-          const qty = cart[id];
-          total += p.price * qty;
-          const row = document.createElement("div");
-          row.className = "citem";
-          row.innerHTML = `
+        } else {
+          cartBody.innerHTML = "";
+          ids.forEach((id) => {
+            const p = products.find((x) => x.id == id);
+            const qty = cart[id];
+            const row = document.createElement("div");
+            row.className = "citem";
+            row.innerHTML = `
         <div class="ce"><img src="${p.image}" alt="${p.name}" onerror="handleImgError(this,'${p.emoji}')" /></div>
         <div class="cmid">
           <b>${p.name}</b>
@@ -1247,10 +1367,26 @@
           <span>${qty}</span>
           <button data-inc="${id}"><i data-feather="plus"></i></button>
         </div>`;
-          cartBody.appendChild(row);
-        });
-        cartTotal.textContent = rupiah(total);
-        checkoutBtn.disabled = false;
+            cartBody.appendChild(row);
+          });
+          checkoutBtn.disabled = false;
+        }
+
+        // hitung subtotal / diskon / total
+        const subtotal = getSubtotal();
+        const discount = getDiscount(subtotal);
+        const grandTotal = subtotal - discount;
+
+        cartSubtotal.textContent = rupiah(subtotal);
+        cartTotal.textContent = rupiah(grandTotal);
+        if (discount > 0 && appliedVoucher) {
+          discRow.style.display = "flex";
+          discLabel.textContent = `Diskon (${appliedVoucher.code})`;
+          cartDiscount.textContent = "- " + rupiah(discount);
+        } else {
+          discRow.style.display = "none";
+        }
+
         if (window.feather) feather.replace();
       }
 
@@ -1264,6 +1400,46 @@
         const decBtn = e.target.closest("[data-dec]");
         if (incBtn) changeQty(incBtn.dataset.inc, 1);
         if (decBtn) changeQty(decBtn.dataset.dec, -1);
+      });
+
+      // ====== VOUCHER ======
+      const voucherInput = document.getElementById("voucherInput");
+      const voucherMsg = document.getElementById("voucherMsg");
+
+      function updateVoucherMsg() {
+        if (appliedVoucher) {
+          voucherMsg.textContent = `✅ ${appliedVoucher.label} dipakai!`;
+          voucherMsg.style.color = "#0a8a55";
+        } else if (voucherInput.value.trim() === "") {
+          voucherMsg.textContent = "";
+        }
+      }
+
+      document.getElementById("applyVoucher").addEventListener("click", () => {
+        const code = voucherInput.value.trim().toUpperCase();
+        const subtotal = getSubtotal();
+
+        if (code === "") {
+          appliedVoucher = null;
+          voucherMsg.textContent = "Masukin kodenya dulu ya 🙂";
+          voucherMsg.style.color = "#888";
+        } else if (!vouchers[code]) {
+          appliedVoucher = null;
+          voucherMsg.textContent = "❌ Kode voucher nggak valid";
+          voucherMsg.style.color = "#d11";
+        } else if (subtotal < vouchers[code].minOrder) {
+          appliedVoucher = null;
+          voucherMsg.textContent = `⚠️ Min. belanja ${rupiah(vouchers[code].minOrder)} buat pakai kode ini`;
+          voucherMsg.style.color = "#c87800";
+        } else {
+          appliedVoucher = { code, ...vouchers[code] };
+          voucherMsg.textContent = `✅ ${vouchers[code].label} dipakai!`;
+          voucherMsg.style.color = "#0a8a55";
+        }
+        renderCart();
+      });
+      voucherInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") document.getElementById("applyVoucher").click();
       });
 
       // drawer open/close
@@ -1308,14 +1484,19 @@
       function buildWaMessage(name, address) {
         let msg = "Halo Kaheins Sweetbaked! Aku mau pesen dong!:\n\n";
         msg += `Nama Pembeli: ${name}\nAlamat Pengiriman: ${address}\n\n`;
-        let total = 0;
         Object.keys(cart).forEach((id) => {
           const p = products.find((x) => x.id == id);
           const qty = cart[id];
-          total += p.price * qty;
           msg += `• ${p.name} x${qty} — ${rupiah(p.price * qty)}\n`;
         });
-        msg += `\n*Total: ${rupiah(total)}*\n\nMohon info ketersediaan & ongkirnya ya. Terima kasih!`;
+        const subtotal = getSubtotal();
+        const discount = getDiscount(subtotal);
+        msg += `\nSubtotal: ${rupiah(subtotal)}`;
+        if (discount > 0 && appliedVoucher) {
+          msg += `\nVoucher (${appliedVoucher.code}): -${rupiah(discount)}`;
+        }
+        msg += `\n*Total: ${rupiah(subtotal - discount)}*`;
+        msg += `\n\nMohon info ketersediaan & ongkirnya ya. Terima kasih!`;
         return encodeURIComponent(msg);
       }
       checkoutBtn.addEventListener("click", () => {
