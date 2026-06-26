@@ -1086,16 +1086,18 @@
       </div>
       <div class="drawer-body" id="cartBody"></div>
       <div class="drawer-foot">
-        <div class="voucher-row">
-          <input
-            type="text"
-            id="voucherInput"
-            placeholder="Punya kode voucher?"
-            autocomplete="off"
-          />
-          <button id="applyVoucher">Pakai</button>
+        <div id="voucherSection">
+          <div class="voucher-row">
+            <input
+              type="text"
+              id="voucherInput"
+              placeholder="Punya kode voucher?"
+              autocomplete="off"
+            />
+            <button id="applyVoucher">Pakai</button>
+          </div>
+          <p id="voucherMsg"></p>
         </div>
-        <p id="voucherMsg"></p>
         <div class="sub-row">
           <span>Subtotal</span><span id="cartSubtotal">Rp 0</span>
         </div>
@@ -1236,7 +1238,7 @@
           desc: "Blue Monstery scoopable dengan tekstur lembut, padat, dan penuh potongan cokelat di atasnya. Manis, creamy, dan tampil beda dengan warna khas yang bikin penasaran sejak suapan pertama.",
           bg: "bg-blue",
         },
-            {
+        {
           id: 7,
           name: "S'mores Cookies",
           emoji: "🌾",
@@ -1265,20 +1267,27 @@
 
       // ====== DATA VOUCHER ======
       // type: "percent" (potongan %) atau "fixed" (potongan Rp). minOrder = minimal belanja.
+      // MAX_DISCOUNT = batas maksimal potongan untuk SETIAP kode voucher (Rp).
+      // active: true = voucher nyala, false = mati (kode jadi nggak valid).
+      //   -> kalau SEMUA voucher active:false, kolom input voucher otomatis disembunyiin.
+      const MAX_DISCOUNT = 10000;
       const vouchers = {
         KAHEINS10: {
+          active: false,
           type: "percent",
           value: 10,
           minOrder: 50000,
           label: "Diskon 10%",
         },
         HEMAT5K: {
+          active: false,
           type: "fixed",
           value: 5000,
           minOrder: 30000,
           label: "Potongan Rp 5.000",
         },
         ONGKIRGRATIS: {
+          active: false,
           type: "fixed",
           value: 10000,
           minOrder: 75000,
@@ -1336,7 +1345,8 @@
           appliedVoucher.type === "percent"
             ? Math.round((subtotal * appliedVoucher.value) / 100)
             : appliedVoucher.value;
-        return Math.min(d, subtotal); // diskon nggak boleh lebih besar dari subtotal
+        // potongan dibatasi: tidak lebih dari subtotal, dan maks MAX_DISCOUNT per kode voucher
+        return Math.min(d, subtotal, MAX_DISCOUNT);
       }
 
       function addToCart(id) {
@@ -1414,6 +1424,15 @@
       // ====== VOUCHER ======
       const voucherInput = document.getElementById("voucherInput");
       const voucherMsg = document.getElementById("voucherMsg");
+      const voucherSection = document.getElementById("voucherSection");
+
+      // sembunyiin kolom voucher kalau nggak ada satupun voucher yang aktif
+      function updateVoucherSectionVisibility() {
+        const adaYangAktif = Object.values(vouchers).some(
+          (v) => v.active !== false,
+        );
+        voucherSection.style.display = adaYangAktif ? "" : "none";
+      }
 
       function updateVoucherMsg() {
         if (appliedVoucher) {
@@ -1432,7 +1451,7 @@
           appliedVoucher = null;
           voucherMsg.textContent = "Masukin kodenya dulu ya 🙂";
           voucherMsg.style.color = "#888";
-        } else if (!vouchers[code]) {
+        } else if (!vouchers[code] || vouchers[code].active === false) {
           appliedVoucher = null;
           voucherMsg.textContent = "❌ Kode voucher nggak valid";
           voucherMsg.style.color = "#d11";
@@ -1536,6 +1555,7 @@
         );
       });
 
+      updateVoucherSectionVisibility();
       renderCart();
       if (window.feather) feather.replace();
     </script>
