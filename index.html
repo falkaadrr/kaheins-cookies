@@ -1182,6 +1182,11 @@
       // Ganti nomor di bawah dengan nomor WhatsApp toko (format internasional tanpa +, tanpa 0 depan)
       const WA_NUMBER = "6283848531389";
 
+      // URL Google Apps Script buat nyatet order ke Google Sheet.
+      // Biarin kosong ("") kalau belum dipasang -> fitur tracking dilewati, web tetap jalan normal.
+      const SHEET_URL =
+        "https://script.google.com/macros/s/AKfycbx2pp22n3BnkO7_EEcAD3weBDT6DjRjqI0WUuZlJW8zKSxqMRZ6ZnvdNCI2gBl-dkqj/exec";
+
       // ====== DATA PRODUK ======
       const products = [
         {
@@ -1527,6 +1532,38 @@
         msg += `\n\nMohon info ketersediaan & ongkirnya ya. Terima kasih!`;
         return encodeURIComponent(msg);
       }
+      // ====== CATAT ORDER KE GOOGLE SHEET ======
+      function logOrder(name, address) {
+        if (!SHEET_URL) return; // belum dikonfigurasi -> dilewati
+        const subtotal = getSubtotal();
+        const discount = getDiscount(subtotal);
+        const items = Object.keys(cart)
+          .map((id) => {
+            const p = products.find((x) => x.id == id);
+            return `${p.name} x${cart[id]}`;
+          })
+          .join(", ");
+        const order = {
+          nama: name,
+          alamat: address,
+          items: items,
+          subtotal: subtotal,
+          voucher: appliedVoucher ? appliedVoucher.code : "-",
+          diskon: discount,
+          total: subtotal - discount,
+        };
+        // fire-and-forget: kirim ke Sheet, nggak nungguin balasan biar checkout tetap ngebut
+        try {
+          fetch(SHEET_URL, {
+            method: "POST",
+            mode: "no-cors",
+            body: JSON.stringify(order),
+          });
+        } catch (err) {
+          console.warn("Gagal nyatet order:", err);
+        }
+      }
+
       checkoutBtn.addEventListener("click", () => {
         if (Object.keys(cart).length === 0) return;
         const name = buyerNameInput.value.trim();
@@ -1544,6 +1581,7 @@
           buyerAddressInput.focus();
           return;
         }
+        logOrder(name, address); // catat dulu ke Sheet
         const url = `https://wa.me/${WA_NUMBER}?text=${buildWaMessage(name, address)}`;
         window.open(url, "_blank");
       });
