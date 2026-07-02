@@ -1284,7 +1284,7 @@
       // MAX_DISCOUNT = batas maksimal potongan untuk SETIAP kode voucher (Rp).
       // active: true = voucher nyala, false = mati (kode jadi nggak valid).
       //   -> kalau SEMUA voucher active:false, kolom input voucher otomatis disembunyiin.
-      const MAX_DISCOUNT = 10000;
+      const MAX_DISCOUNT = 15000;
       const vouchers = {
         KAHEINS10: {
           active: false,
@@ -1306,6 +1306,13 @@
           value: 10000,
           minOrder: 75000,
           label: "Gratis ongkir Rp 10.000",
+        },
+        KAHEINSXBSI: {
+          active: true,
+          type: "fixed",
+          value: 10000,
+          minOrder: 75000,
+          label: "Diskon Khusus Untuk Mahasiswa BSI",
         },
       };
       let appliedVoucher = null;
